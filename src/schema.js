@@ -6,6 +6,7 @@ const typeDefs = gql`
         "Get tracks array for homepage grid"
         tracksForHome: [Track!]!
         tracksForHomeFetch: [Track!]!
+        getCarePlanDetails: CarePlanResponse
     }
 
     "A track is a group of Modules that teaches about a specific topic"
@@ -31,6 +32,31 @@ const typeDefs = gql`
         "Author's profile picture url"
         photo: String
     }
+
+    "Care Plan Details"
+    type CarePlanResponse {
+        data: Data
+        message: String
+        outcome: String
+    }
+
+    type Data {
+        entry: [Entry]
+        type: String
+        resourceType: String
+    }
+
+    type Entry {
+        fullUrl: String!
+        resource: Resource
+    }
+
+    type Resource {
+        id: ID!
+        status: String
+        resourceType: String
+        created: String
+}
 `;
 
 module.exports = typeDefs;
