@@ -6,7 +6,8 @@ const typeDefs = gql`
         "Get tracks array for homepage grid"
         tracksForHome: [Track!]!
         tracksForHomeFetch: [Track!]!
-        getCarePlanDetails: CarePlanResponse
+        getCarePlanDetails: CarePlanResponse,
+        getHomeData: HomeData     
     }
 
     "A track is a group of Modules that teaches about a specific topic"
@@ -56,7 +57,18 @@ const typeDefs = gql`
         status: String
         resourceType: String
         created: String
-}
+    }
+
+    type HomeData {
+        tiles: [Tile!]!
+    }
+
+    type Tile {
+        id: String
+        value: String
+        display: String
+        image: String
+    }
 `;
 
 module.exports = typeDefs;
