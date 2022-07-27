@@ -16,40 +16,38 @@ const resolvers = {
         return res.json();
       },
 
-      getCarePlanDetails: async () => {
-        const response = await fetch(`${process.env.BASEURL}api/v1/CarePlan?patientId=8738f5d6-0398-45db-8703-528a7c2a99c2`, {
+      getCarePlanDetails: async (parent, args, context, info) => {
+        const response = await fetch(`${process.env.BASEURL}api/v1/CarePlan?patientId=${args.patientId}`, {
           method: 'get',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + process.env.TOKEN
+            'Authorization': 'Bearer ' + context?.token
           }
         });
         const data = await response.json();
         return data;
       },
 
-      getHomeData: async () => {
-        const response = await fetch(`${process.env.BASEURL}api/v1/CarePlan?patientId=8738f5d6-0398-45db-8703-528a7c2a99c2`, {
+      getHomeData: async (parent, args, context, info) => {
+        const response = await fetch(`${process.env.BASEURL}api/v1/CarePlan?patientId=${args.patientId}`, {
           method: 'get',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + process.env.TOKEN
+            'Authorization': 'Bearer ' + context?.token
           }
         });
         const data = await response.json();
         const patientCarePlan = DecodeCarePlan(data.data);
-        const surveys = flatten(patientCarePlan?.procedure?.map(({ components }) => components.filter((row) => row.type === 'Questionnaire')))
+        const surveys1 = flatten(patientCarePlan?.procedure?.map(({ components }) => components.filter((row) => row.type === 'Questionnaire')))
           .map((row) => {
             return {
               id: row.id,
               value: row.topic,
-              // path: row,
               display: row.topic,
-              logo: row.topic,
-              // dateRange: row.dateRange
+              logo: `https://graphql-server-data.s3.ap-south-1.amazonaws.com/${row.topic}.svg`,
             };
           })
-          .filter(row =>
+        const surveys =  surveys1.filter(row =>
             [
               'dailyHealthCheck',
               'covidHealthCheck',
@@ -68,8 +66,7 @@ const resolvers = {
             )
           ])
         )
-        console.log("tiles ----->>>>", tiles);
-        return [...tiles];
+        return {tiles};
       }
     },
   

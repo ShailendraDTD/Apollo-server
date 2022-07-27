@@ -23,6 +23,14 @@ async function startApolloServer(typeDefs, resolvers) {
             trackAPI: new TrackAPI(),
           };
         },
+    context: ({ req }) => {
+      // Note: This example uses the `req` argument to access headers,
+      // Get the user token from the headers.
+      const token = req.headers.authorization || '';
+    
+      // Add the token to the context
+      return { token };
+    },
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
 

@@ -7,7 +7,7 @@ const typeDefs = gql`
         tracksForHome: [Track!]!
         tracksForHomeFetch: [Track!]!
         getCarePlanDetails: CarePlanResponse,
-        getHomeData: HomeData     
+        getHomeData(patientId: ID!): HomeData     
     }
 
     "A track is a group of Modules that teaches about a specific topic"
@@ -60,14 +60,14 @@ const typeDefs = gql`
     }
 
     type HomeData {
-        tiles: [Tile!]!
+        tiles: [Tile]
     }
 
     type Tile {
         id: String
         value: String
         display: String
-        image: String
+        logo: String
     }
 `;
 
