@@ -53,9 +53,9 @@ const DecodeCarePlan = (carePlanBundle) => {
 
   const entryBundle = carePlanBundle.entry;
 
-  const admissionDate = episodeOfCare?.resource.period.start;
-  const dischargeDate = episodeOfCare?.resource.period.end;
-  const surgeryDate = procedureResource?.resource.performedDateTime;
+  const admissionDate = episodeOfCare?.resource?.period?.start;
+  const dischargeDate = episodeOfCare?.resource?.period?.end;
+  const surgeryDate = procedureResource?.resource?.performedDateTime;
   const childDOB = patient?.resource?.birthDate;
 
 
@@ -93,12 +93,12 @@ const DecodeCarePlan = (carePlanBundle) => {
           return {
             id: bundleElement.resource.id,
             refId: parentElement?.resource.id,
-            dateRange: DecodeDateRange(
-              referenceElement?.resource.occuranceTiming?.repeat.boundsPeriod ||
-                referenceElement?.resource.occurrencePeriod ||
-                referenceElement?.resource.executionPeriod ||
-                bundleElement.resource.effectivePeriod
-            ),
+            // dateRange: DecodeDateRange(
+            //   referenceElement?.resource.occuranceTiming?.repeat.boundsPeriod ||
+            //     referenceElement?.resource.occurrencePeriod ||
+            //     referenceElement?.resource.executionPeriod ||
+            //     bundleElement.resource.effectivePeriod
+            // ),
             period: {
               code: row.detail.scheduledTiming.code?.coding[0].code,
               boundsDuration: row.detail.scheduledTiming.repeat.boundsDuration,
@@ -137,13 +137,13 @@ const DecodeCarePlan = (carePlanBundle) => {
       return {
         title: planDefinition?.resource.title || '',
         type: (planDefinition?.resource?.type?.coding[0]?.code || 'procedure'),
-        carePlanAddDate: new Date(carePlanRow.meta.lastUpdated),
-        startDate: new Date(carePlanRow.period?.start || ''),
-        endDate: new Date(carePlanRow.period?.end || ''),
-        primary: carePlanRow.extension.find((extension) => extension.url === DTD_PRIMARY_CAREPLAN)?.valueBoolean,
+        carePlanAddDate: new Date(carePlanRow?.meta?.lastUpdated),
+        startDate: new Date(carePlanRow?.period?.start || ''),
+        endDate: new Date(carePlanRow?.period?.end || ''),
+        primary: carePlanRow?.extension?.find((extension) => extension.url === DTD_PRIMARY_CAREPLAN)?.valueBoolean,
         components: components,
-        status: carePlanRow.status,
-        cpType: carePlanRow.extension?.find((row) => row.url === DTD_CP_TYPE)?.valueString,
+        status: carePlanRow?.status,
+        cpType: carePlanRow?.extension?.find((row) => row.url === DTD_CP_TYPE)?.valueString,
         library,
       };
     }),

@@ -44,7 +44,7 @@ const resolvers = {
               id: row.id,
               value: row.topic,
               display: row.topic,
-              logo: `https://graphql-server-data.s3.ap-south-1.amazonaws.com/${row.topic}.svg`,
+              logo: `${process.env.IMAGE_BUCKET}${row.topic}.svg`,
             };
           })
         const surveys =  surveys1.filter(row =>
